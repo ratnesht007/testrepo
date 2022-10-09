@@ -1,0 +1,9 @@
+﻿  Application.cpp
+C:\old_laptop_backup\gitrepo\MyTestProject\atmdenominate\CashUtilFunction.h(48,27): warning C4018: '<': signed/unsigned mismatch
+C:\old_laptop_backup\gitrepo\MyTestProject\atmdenominate\Application.cpp(123,23): warning C4018: '<': signed/unsigned mismatch
+C:\old_laptop_backup\gitrepo\MyTestProject\atmdenominate\Application.cpp(178,23): warning C4018: '<': signed/unsigned mismatch
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 528 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  atmdenominate.vcxproj -> C:\old_laptop_backup\gitrepo\MyTestProject\Release\atmdenominate.exe

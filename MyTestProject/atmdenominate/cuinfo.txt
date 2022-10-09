@@ -1,0 +1,9 @@
+# '#' indicate comment line, will not be read by program
+# Common separated list of type, unitid, denominations, count, maximum, status
+0,CAS1,1000,100,20,0
+0,CAS2,2000,100,30,0
+0,CAS3,5000,100,40,0
+0,CAS4,10000,100,50,1
+0,CAS5,20000,100,60,0
+1,REJ1,0,0,0,0
+2,RET1,0,0,0,0
