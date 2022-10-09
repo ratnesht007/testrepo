@@ -54,7 +54,10 @@ private:
 
 	int greedyAlgo(std::vector<int>& arr, int sum, std::map<int, int, std::greater<int>>& denoMix);
 
-	void validDenoAvailable(std::vector<int>& denoList, std::vector<int>& limits);
+	int greedyAlgo_limit(std::vector<std::pair<int, int>> denolistwithLimits, int sum, std::map<int, int, std::greater<int>>& denoMix);
+
+
+	void validDenoAvailable(std::vector<int>& denoList, std::vector<std::pair<int, int>>& denolistwithLimits);
 
 	bool takeCash();
 

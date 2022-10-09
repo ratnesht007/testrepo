@@ -3,6 +3,8 @@
 #include "CashOutModule.h"
 #include<thread>
 #include<chrono>
+#include <utility>
+
 
 LPCUINFO CashOutModule::cuInfo;
 
@@ -149,6 +151,77 @@ bool CashOutModule::updateRetractCounter(std::map<int, int, std::greater<int>>& 
 }
 
 
+// Name : greedyAlgo: Calculate the mix following greedy alogirith with honoring the limits placed on each denomination
+// Param :
+//  denolistwithLimits : cassette list with limits
+//  sum : amount for which bill mix to be calculated
+// denomix : deno mix map where result to be written
+// Return :
+//  int : If mix possible return 1 other wise 0
+
+int CashOutModule::greedyAlgo_limit(std::vector<std::pair<int, int>> denolistwithLimits, int sum, std::map<int, int, std::greater<int>>& denoMix)
+{
+    int sum_original = sum;
+
+    std::sort(denolistwithLimits.rbegin(), denolistwithLimits.rend());
+
+    for (int i = 0; i < denolistwithLimits.size(); i++) {
+        int curDeno = denolistwithLimits[i].first;
+        int curLimit = denolistwithLimits[i].second;
+
+        while (sum >= curDeno) {
+            int cnt = sum / curDeno;
+            int extra_cnt = 0;
+
+            if (cnt > curLimit) {
+                extra_cnt = cnt - curLimit;
+                cnt = curLimit;
+            }
+            sum = (sum % curDeno) + (extra_cnt * curDeno);            
+            denoMix[curDeno] = cnt;
+            break;
+        }
+    }
+
+    if (sum != 0) {
+
+        int remaining_amt = sum;
+
+        // calculate low amount
+        int highest_min_possible_amt = sum_original - remaining_amt;
+
+        // calculate high amount (check for border condition)
+        int lowest_max_possible_amt = 0;
+        int lowest_deno = denolistwithLimits[denolistwithLimits.size() - 1].first;
+        int lowest_deno_limit = denolistwithLimits[denolistwithLimits.size() - 1].second;
+        int lowest_deno_utilized = denoMix[lowest_deno];
+        int lowest_deno_remaining = lowest_deno_limit - lowest_deno_utilized;
+
+
+
+        if(lowest_deno_remaining >= 1)
+            lowest_max_possible_amt = highest_min_possible_amt + denolistwithLimits[denolistwithLimits.size() - 1].first;
+
+        std::cout << "*********Given amount is not dispensiable, suggested amount closer to your entered amounts are : \n";
+
+        if (highest_min_possible_amt)
+            std::cout << "******Optional closet minimum : EUR " << highest_min_possible_amt << "\n";
+
+        if (lowest_max_possible_amt)
+            std::cout << "******Optional closet maximum : EUR " << lowest_max_possible_amt << "\n";
+
+        std::cout << "Try another transaction with above amounts \n";
+
+        // erase deno mix
+        denoMix.erase(denoMix.begin(), denoMix.end());
+
+        return 0;
+    }
+
+    return 1;
+
+}
+
 // Name : greedyAlgo: Calculate the mix following greedy alogirith. i.e. pick as many as highest deno available till amount is satisfied
 // Param :
 //  arr : cassette lsit
@@ -181,7 +254,13 @@ int CashOutModule::greedyAlgo(std::vector<int>& arr, int sum, std::map<int, int,
 
         int lowest_max_possible_amt = highest_min_possible_amt + arr[arr.size() - 1];
 
-        std::cout << "Invalid amount!!!!Given amount is not dispensiable, suggested amount closer to your entered amounts are : \nEUR" << highest_min_possible_amt << " OR EUR" << lowest_max_possible_amt << "\n";
+        std::cout << "Invalid amount!!!!Given amount is not dispensiable, suggested amount closer to your entered amounts are : \n";
+        
+        if(highest_min_possible_amt)
+        std::cout << "Optional closet minimum : EUR " << highest_min_possible_amt << "\n";
+
+        if(lowest_max_possible_amt)
+        std::cout << "Optional closet maximum : EUR " << lowest_max_possible_amt << "\n";
 
         std::cout << "Try another transaction with above amounts \n";
 
@@ -196,11 +275,11 @@ int CashOutModule::greedyAlgo(std::vector<int>& arr, int sum, std::map<int, int,
 // Param :
 //  cuInfo : cassette info
 //  denoList : list to hold valid cassette denomination
-//  limits : minimum of 'count' and 'maximum' count allowed for a tranaction' for a perticular denomination
+//  denolistwithLimits : max limit of denomination count for a perticular denomination
 // Return :
 //  void
 
-void CashOutModule::validDenoAvailable(std::vector<int>&denoList, std::vector<int>&limits) {
+void CashOutModule::validDenoAvailable(std::vector<int>&denoList, std::vector<std::pair<int, int>>& denolistwithLimits) {
 
     LPCASHUNIT* csslist = cuInfo->lppList;
 
@@ -212,12 +291,22 @@ void CashOutModule::validDenoAvailable(std::vector<int>&denoList, std::vector<in
 
             denoList.push_back(cassUnit.denominations / exp_factor);
 
-            limits.push_back(std::min(cassUnit.count, cassUnit.maximum));
+            // zero means no restriction
+            int perTxnLimit = cassUnit.maximum == 0 ? INT_MAX : cassUnit.maximum;
+
+            denolistwithLimits.push_back({ cassUnit.denominations / exp_factor, std::min(cassUnit.count, perTxnLimit) });
 
         }
     }
 
 }
+
+
+
+// Name : presentCashThread: Thread to simulate cash taken process with a 20 second timeout
+// Param :
+//  None
+// Return :
 
 auto presentCashThread = []() {
 
@@ -289,18 +378,24 @@ int CashOutModule::withdrawalFlow() {
     // 1. Get Valid Denomination
 
     std::vector<int> denoList;
-    std::vector<int> limits;
+    std::vector<std::pair<int, int>> denolistwithLimits;
 
-    validDenoAvailable(denoList, limits);
+    validDenoAvailable(denoList, denolistwithLimits);
 
     // 1.1 print valid deno with limits (for tracing purpose)
 
     std::cout << "********TRACE INFO SECTION START: \n Following are valid denomination considered for this transaction (deno, limit) : " << "\n";
 
+    for (auto denoPair : denolistwithLimits) {
+        std::cout << denoPair.first << "--" << denoPair.second << "\n";
+    }
+
+    /*
     for (int i = 0; i < denoList.size(); i++) {
 
         std::cout << "    (" << denoList[i] << " , " << limits[i] << ")" << "\n";
-    }
+    } 
+    */
 
     std::cout << "********TRACE INFO SECTION END*************" << "\n";
 
@@ -317,7 +412,11 @@ int CashOutModule::withdrawalFlow() {
     // value : mix count
 
     std::map<int, int, std::greater<int>> denoMix;
-    int result = greedyAlgo(denoList, dispenseAmount, denoMix);
+
+    // int result = greedyAlgo(denoList, dispenseAmount, denoMix);
+
+    int result = greedyAlgo_limit(denolistwithLimits, dispenseAmount, denoMix);
+
 
     // 3.1 check if amount is possible
     if (!result) {
@@ -396,7 +495,7 @@ bool CashOutModule::getwidrawalStatus() {
 
         CASHUNIT& cassUnit = *csslist[i];
 
-        if (cassUnit.Type == BILL && cassUnit.count > 0 && cassUnit.maximum > 0 && cassUnit.Status == ONLINE) {
+        if (cassUnit.Type == BILL && cassUnit.count > 0 && cassUnit.Status == ONLINE) {
             validCassCount++;
         } else if (cassUnit.Type == REJECT) {
             validRejectCount++;
