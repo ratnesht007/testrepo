@@ -1,5 +1,5 @@
 1) Test Cases :
- -> precondition cassette info, put below data in cuinfo.txt file
+ -> precondition cassette info, put below data in cuinfo.txt file. (Type, Unitid, Denomination, count, maximum, status)
   0,CAS1,500,100,25,0
   0,CAS2,1000,100,3,0
   0,CAS3,2000,100,4,0
@@ -8,7 +8,7 @@
   1,REJ1,0,0,0,0
   2,RET1,0,0,0,0
   
- -> Above data indicates below valid denominations
+ -> Above data indicates below are valid denominations
   EUR 5 X 25
   EUR 10 X 3
   EUR 20 X 4
@@ -20,6 +20,21 @@
  TC 5 : Amount : 35.  It generated mix -> 20*1, 10*1, 5*1
  TC 6 : Amount : 34.  It did not generate mix -> Recommened poissible wd amounts : low : 30 and high:35. (Because lowest deno is 5)
  TC 7 : Amount : 300. It did not generate a mix -> Max possible is 235. So it recommended just 235. It did not recommend high amount as it would go beyond limit
- TC 8 : Amount : kept on withdrawing till EUR 5 counts goes to 0. It removed it from possible considered combinations and marks deno is INOP. 
+ TC 8 : Amount :      kept on withdrawing till EUR 5 counts goes to 0. It removed it from possible considered combinations and marks deno is INOP.
+ TC 9 : Amount : 4.   It did not generate mix -> Recommened poissible wd amounts as EUR 5
+ 
+ Tried some other test cases as well. I am yet to fully test this.
+ 
+ 2) Disdvantages of greedy algorithm. 
+  -> Greedy algotith doesn't always give least possible notes. Eg. hypothetically consider we have deno like 1000, 700, 100 and input amount is 1400. 
+     According to greedy it will provide 1000*1, 100*4 (total 5 notes) but optional least notes solution would be 700 * 2. 
+     This problem is known as local maxima. There is no optinal solution available to this but to calcualate all combinations and pick min notes combination.
+     
+  -> For some input greedy alogorithm doesn't work. Eg. Consider we have EUR 20 and EUR 50 deno available and input amount is EUR 60. According to greedy it will pick      50*1 and it will throw invlaid error as it can't not find remaining 10 to be dispensiable (because min deno is 20). 
+     The solution for this problme would be backtracking. Which I am yet to implement
+     
+  -> Above both problem can be solved using dynamic programming approach which is efficient one and always works but it takes lot of space (array of size of amount).        There is a need to find a solution which will use mix of greedy and dynamic programming.
+  
+3)
   
   
