@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\old_laptop_backup\gitrepo\MyTestProject\Release\atmdenominate.exe</FullPath>
+      <FullPath>C:\old_laptop_backup\gitrepo\testrepo\MyTestProject\Release\atmdenominate.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

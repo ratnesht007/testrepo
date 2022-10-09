@@ -183,6 +183,8 @@ int CashOutModule::greedyAlgo_limit(std::vector<std::pair<int, int>> denolistwit
         }
     }
 
+
+    // Recommend low and high amount
     if (sum != 0) {
 
         int remaining_amt = sum;
@@ -196,8 +198,6 @@ int CashOutModule::greedyAlgo_limit(std::vector<std::pair<int, int>> denolistwit
         int lowest_deno_limit = denolistwithLimits[denolistwithLimits.size() - 1].second;
         int lowest_deno_utilized = denoMix[lowest_deno];
         int lowest_deno_remaining = lowest_deno_limit - lowest_deno_utilized;
-
-
 
         if(lowest_deno_remaining >= 1)
             lowest_max_possible_amt = highest_min_possible_amt + denolistwithLimits[denolistwithLimits.size() - 1].first;

@@ -1,5 +1,7 @@
-﻿  CashOutModule.cpp
+﻿  Application.cpp
+  CashOutModule.cpp
 C:\old_laptop_backup\gitrepo\testrepo\MyTestProject\atmdenominate\CashOutModule.cpp(168,23): warning C4018: '<': signed/unsigned mismatch
 C:\old_laptop_backup\gitrepo\testrepo\MyTestProject\atmdenominate\CashOutModule.cpp(238,23): warning C4018: '<': signed/unsigned mismatch
 C:\old_laptop_backup\gitrepo\testrepo\MyTestProject\atmdenominate\CashOutModule.cpp(561,23): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
   atmdenominate.vcxproj -> C:\old_laptop_backup\gitrepo\testrepo\MyTestProject\Debug\atmdenominate.exe

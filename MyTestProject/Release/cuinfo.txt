@@ -1,0 +1,11 @@
+# '#' indicate comment line, will not be read by program
+# Common separated list of type, unitid, denominations, count, maximum, status
+# 5-25, 10-3, 20-4 and amount 125 (20*4, 10*3, 5*3) , 100 (20*4, 10*2), 235 (20*4, 10*3, 5*25), 45(20*2, 5*1), 35(20*1, 10*1, 5*1). kept on #withdrawing till made 5 count to 0 then it allowed only 10 and 20
+# 5-25, 10-3, 20-4 and amount 34 ( Recommend 30 & 35), amount 300 (recommend 235 only (this is max possible) as 240 would not be possible)
+0,CAS1,500,100,25,0
+0,CAS2,1000,100,3,0
+0,CAS3,2000,100,0,0
+0,CAS4,5000,100,50,1
+0,CAS5,10000,100,60,1
+1,REJ1,0,0,0,0
+2,RET1,0,0,0,0
