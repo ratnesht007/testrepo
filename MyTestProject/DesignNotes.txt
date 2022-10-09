@@ -1,4 +1,21 @@
-Design notes :
+ NOTE : I am yet to implement persist logic (i.e. writing to cuinfo.txt file the latest counter). However, once application launched, 
+          we can do multiple transactions in chaining and it will update and show the cassette couunters on screen.
+        
+IMP --------->:Testing recommendation <-------------IMP
+    1. Select Show Cassette Details (password protected '1234')
+    2. Onserve cassette status 
+    1. Select withdrawal transaction
+    2. It wil show notes which are being considered (along with limit)
+    3. Enter amount
+    4. Confirm the MIX
+    5. Take your cash or let timeout happens ( based on test case)
+    6. It will show the main menu
+    7. Select Show Cassette Details
+    8. Observe the cassette details modified
+    9. Follow steps 1 - 8 in chaining and observe the expected status after each txn
+
+
+----> Design notes <------
   1. Application.cpp : is main control instance. It creates CashCoutModule module to inilialize (read cuinfo.text) and prepare cash unit data.
   
   2. CashUnitStructure.h : This defines the structs for cdm_cash_unit and cdm_cu_info ( Added few special member functions)
@@ -28,25 +45,12 @@ Design notes :
         - On Timeout : Update retract counters and show message
         - Upon note taken event : Do nothing ( cassette structure is already updated)
         
-  NOTE : I am yet to implement persist logic (i.e. writing to cuinfo.txt file the latest counter). However, once application launched, 
-          we can do multiple transactions in chaining and it will update and show the cassette couunters on screen.
-          
-IMP --------->:Testing recommendation <-------------IMP
-    1. Select Show Cassette Details (password protected '1234')
-    2. Onserve cassette status 
-    1. Select withdrawal transaction
-    2. It wil show notes which are being considered (along with limit)
-    3. Enter amount
-    4. Confirm the MIX
-    5. Take your cash or let timeout happens ( based on test case)
-    6. It will show the main menu
-    7. Select Show Cassette Details
-    8. Observe the cassette details modified
-    9. Follow steps 1 - 8 in chaining and observe the expected status after each txn
-        
 Improvemnets :
   - More of modern c++ constructs should have been used.
   - Some of edge cases the flow
+  - Make algorithm more efficient
+  - Handle exceptions in the flow
+  - Better naming conventions and merging of the some of the functions. I started with single cpp file then split it into multiple files hence some of the optimization     is remaining
   - Proper message wording
   - Not updating the text file to persit. It maintains state till application is running. 
         
