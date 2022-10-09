@@ -35,6 +35,14 @@
      
   -> Above both problem can be solved using dynamic programming approach which is efficient one and always works but it takes lot of space (array of size of amount).        There is a need to find a solution which will use mix of greedy and dynamic programming.
   
-3)
+3) Other mix algoriths
+  -> Least note algo : Dynammic programming approach to provide least notes in each dispense operation
+  -> Max smaller deno note : Dispense as many of notes of least denomination. (Not used frequently)
+  -> Even Mix : Try to evenly distribute mix across all cassettes
+  -> Adaptive Mix : Custom mix for customer while application adapts (adapt algo could be anything from above three list) remaining as customer changes amount
+  
+4) REJECT Cassette
+  -> Can be used to store notes rejected during dispense due to quality issues (worn/torn). budled with another note etc.
+  
   
   
