@@ -1,0 +1,25 @@
+1) Test Cases :
+ -> precondition cassette info, put below data in cuinfo.txt file
+  0,CAS1,500,100,25,0
+  0,CAS2,1000,100,3,0
+  0,CAS3,2000,100,4,0
+  0,CAS4,5000,100,50,1
+  0,CAS5,10000,100,60,1
+  1,REJ1,0,0,0,0
+  2,RET1,0,0,0,0
+  
+ -> Above data indicates below valid denominations
+  EUR 5 X 25
+  EUR 10 X 3
+  EUR 20 X 4
+ 
+ TC 1 : Amount : 125. It generated mix -> 20*4, 10*3, 5*3 ( Note that it took max 4 and 3 notes of 20 and 10 deno and rest of deno 5). It honors limits placed on deno
+ TC 2 : Amount : 100. It generated mix -> 20*4, 10*2
+ TC 3 : Amount : 235. It generated mix -> 20*4, 10*3, 5*25 (235 is max possible amount with given limits. note that it used up available mix combination)
+ TC 4 : Amount : 45.  It generated mix -> 20*2, 5*1
+ TC 5 : Amount : 35.  It generated mix -> 20*1, 10*1, 5*1
+ TC 6 : Amount : 34.  It did not generate mix -> Recommened poissible wd amounts : low : 30 and high:35. (Because lowest deno is 5)
+ TC 7 : Amount : 300. It did not generate a mix -> Max possible is 235. So it recommended just 235. It did not recommend high amount as it would go beyond limit
+ TC 8 : Amount : kept on withdrawing till EUR 5 counts goes to 0. It removed it from possible considered combinations and marks deno is INOP. 
+  
+  
